@@ -87,8 +87,6 @@ This document reports on the completion of the TRP 1 - MCP Setup Challenge, whic
 
 ### Research Process
 
-**Detailed Research Notes**: See [RESEARCH_NOTES.md](RESEARCH_NOTES.md) for comprehensive research documentation.
-
 Research was conducted on best practices for AI agent rules files, with reference to:
 - **Boris Cherny's workflow thread on X** (creator of Claude Code) - [Link](https://x.com/bcherny/status/2007179832300581177)
   - Key takeaway: Hierarchical structure with code examples is most effective
@@ -202,7 +200,6 @@ After updating the rules file, the agent demonstrated:
 1. **`.cursor/rules/agent.mdc`**: Enhanced agent rules file with best practices (for Cursor IDE)
 2. **`.cursor/mcp.json`**: MCP server configuration file
 3. **`docs/MCP_SETUP_REPORT.md`** (This file): Complete documentation of the MCP setup challenge
-4. **`docs/RESEARCH_NOTES.md`**: Detailed research artifacts documenting sources, experiments, and learnings
 
 ### Documentation Structure
 
