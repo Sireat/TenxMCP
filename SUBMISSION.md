@@ -8,13 +8,15 @@ Two API providers were configured for this challenge:
 
 1. **Google Gemini API** (`GEMINI_API_KEY`)
    - **Purpose**: Music generation (Lyria), Video generation (Veo), Image generation (Imagen)
-   - **Key**: `AIzaSyByvVNE42gPzfn1DCfjd6g16EvIgeOLQ6E`
+   - **Key**: `[REDACTED - Configured in .env file]`
    - **Status**: Configured in `.env` file
+   - **Note**: API keys should never be committed to version control
 
 2. **AIMLAPI** (`AIMLAPI_KEY`)
    - **Purpose**: Music generation with vocals (MiniMax Music 2.0)
-   - **Key**: `6c38b50046584e66939cb0ac5f4ab512`
+   - **Key**: `[REDACTED - Configured in .env file]`
    - **Status**: Configured in `.env` file
+   - **Note**: API keys should never be committed to version control
 
 ### Setup Process
 
