@@ -189,7 +189,7 @@ Optional Upload (YouTube, S3)
 
 ### Commands Executed
 
-The following commands have been prepared and documented for content generation. A comprehensive guide (`CONTENT_GENERATION_GUIDE.md`) has been created with step-by-step instructions.
+The following commands have been prepared and documented for content generation.
 
 #### Music Generation Commands
 
@@ -308,7 +308,7 @@ Created `data/lyrics.txt` with structured lyrics:
 
 ### Generation Results
 
-**Note**: Actual generation requires environment setup (`uv` or virtual environment). Once environment is ready, follow `CONTENT_GENERATION_GUIDE.md` for step-by-step instructions.
+**Note**: Actual generation requires environment setup (`uv` or virtual environment). Commands are documented below for when the environment is ready.
 
 **Expected Output Locations**:
 - **Music Files**: `exports/music/{style}_{provider}_{timestamp}.{ext}`
@@ -525,8 +525,7 @@ For long-running jobs (MiniMax, Kling), the system provides:
    - `.cursor/rules/agent.mdc` - Enhanced agent rules file for Cursor
    - `.cursor/mcp.json` - MCP server configuration
 
-3. **Content Generation Documentation**:
-   - `CONTENT_GENERATION_GUIDE.md` - Step-by-step guide for generating content
+3. **Supporting Files**:
    - `data/lyrics.txt` - Sample lyrics file for MiniMax music generation
 
 4. **This Submission**:
@@ -558,7 +557,7 @@ For long-running jobs (MiniMax, Kling), the system provides:
   - Prompt: *[Prompt used]*
 
 **Status**: 
-- Content generation guide created (`CONTENT_GENERATION_GUIDE.md`)
+- Content generation commands documented
 - Ready for generation once environment is set up
 - YouTube upload instructions documented
 
@@ -597,7 +596,7 @@ This submission demonstrates:
      ```
    - Verify installation: `uv run ai-content --help`
 
-2. **Generate Content** (follow `CONTENT_GENERATION_GUIDE.md`):
+2. **Generate Content**:
    - Run music generation commands (instrumental and with vocals)
    - Generate video content
    - Combine into music video if desired
@@ -636,7 +635,6 @@ This submission demonstrates:
 - [x] `data/lyrics.txt` - Lyrics file for MiniMax music generation
 
 ### Supporting Documentation
-- [x] `CONTENT_GENERATION_GUIDE.md` - Step-by-step content generation guide
 - [x] `README.md` - Project documentation (existing)
 
 ### Optional (To be completed)
