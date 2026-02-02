@@ -1,0 +1,171 @@
+# AI Content Generator - Agent Rules
+
+> This file contains rules for AI agents working on this codebase.
+> For full development rules, see [.agent/rules/RULES.md](.agent/rules/RULES.md)
+
+## Agent Behavior Guidelines
+
+### Communication Style
+- **Be concise but thorough**: Provide complete solutions, but avoid unnecessary verbosity
+- **Show, don't just tell**: Include code examples and file paths when explaining concepts
+- **Proactive problem-solving**: Anticipate follow-up questions and address them preemptively
+- **Context-aware**: Reference existing code patterns and architecture when making suggestions
+
+### Code Modification Principles
+1. **Preserve existing patterns**: Follow established conventions in the codebase
+2. **Maintain type safety**: All new code must have full type hints
+3. **Async-first**: Never introduce blocking I/O operations
+4. **Error handling**: Use `GenerationResult` for expected failures, exceptions only for unexpected errors
+5. **Documentation**: Update docstrings and comments when modifying code
+
+### File Organization
+- **Respect module boundaries**: Don't create circular imports
+- **Follow import chain**: `cli` → `pipelines` → `providers` → `core` + `config`
+- **Preset files are static**: Don't add external imports to preset modules
+- **Provider registration**: Always use decorators, never manual registration
+
+## Quick Reference
+
+### Package Structure
+```
+src/ai_content/
+├── core/           # Protocols, Registry, Result, Exceptions
+├── config/         # Pydantic Settings
+├── providers/      # Provider implementations (Google, AIMLAPI, Kling)
+├── presets/        # Music and video style presets
+├── pipelines/      # Orchestration workflows
+├── integrations/   # External services (YouTube, Archive.org)
+├── utils/          # Shared utilities
+└── cli/            # Typer CLI
+```
+
+### Import Chain
+`cli` → `pipelines` → `providers` → `core` + `config`
+
+### Key Rules
+
+1. **Async-First**: All I/O must be async
+2. **Protocols**: Use `Protocol` over ABC for interfaces
+3. **Registry Pattern**: Providers register via `@ProviderRegistry.register_*` decorators
+4. **Result Objects**: Return `GenerationResult`, don't raise for expected failures
+5. **Type Safety**: Full type hints, use Pydantic for config
+6. **UTC Datetimes**: `datetime.now(timezone.utc)`, never `utcnow()`
+7. **Error Context**: Always include provider name and operation in error messages
+8. **Logging**: Use structured logging with emoji prefixes for visual scanning
+
+### Adding a Provider
+
+```python
+@ProviderRegistry.register_music("new_provider")
+class NewMusicProvider:
+    name = "new_provider"
+    supports_vocals = True
+    supports_realtime = False
+    supports_reference_audio = False
+    
+    async def generate(self, prompt: str, **kwargs) -> GenerationResult:
+        """
+        Generate music with detailed docstring.
+        
+        Args:
+            prompt: Style description
+            **kwargs: Additional provider-specific parameters
+            
+        Returns:
+            GenerationResult with success status and file path
+        """
+        ...
+```
+
+### Common Patterns
+
+#### Provider Initialization
+```python
+def __init__(self):
+    self.settings = get_settings().provider_name
+    self._client = None  # Lazy-load API clients
+
+def _get_client(self):
+    """Lazy-load the API client."""
+    if self._client is None:
+        # Initialize client
+    return self._client
+```
+
+#### Error Handling
+```python
+try:
+    # API call
+except AuthenticationError:
+    return GenerationResult(
+        success=False,
+        provider=self.name,
+        content_type="music",
+        error="Authentication failed: API key invalid",
+    )
+```
+
+#### Logging
+```python
+logger.info(f"🎵 {self.name}: Generating {duration}s")
+logger.debug(f"   Prompt: {prompt[:50]}...")
+logger.error(f"❌ {self.name} failed: {error}")
+```
+
+### Skills Available
+
+- `/generate-music` - Music generation workflow
+- `/generate-video` - Video generation workflow
+- Music Generation Skill - Provider selection, prompt patterns
+- Video Generation Skill - Camera keywords, style patterns
+- Prompt Engineering Skill - Best practices, anti-patterns
+
+### Documentation
+
+- [Architecture](docs/architecture/ARCHITECTURE.md)
+- [Extending Guide](docs/guides/EXTENDING.md)
+- [Content Guidelines](docs/guides/AI_CONTENT_CREATION_GUIDELINES.md)
+- [Full Rules](.agent/rules/RULES.md)
+
+## When Making Changes
+
+### Before Modifying Code
+1. **Read existing implementations**: Check similar providers/pipelines for patterns
+2. **Check tests**: Understand expected behavior from test cases
+3. **Review documentation**: Ensure changes align with architecture docs
+
+### During Development
+1. **Maintain consistency**: Follow naming conventions and code style
+2. **Add type hints**: Every function must have complete type annotations
+3. **Handle errors gracefully**: Use `GenerationResult` for expected failures
+4. **Log appropriately**: Use appropriate log levels (DEBUG, INFO, ERROR)
+
+### After Changes
+1. **Update docstrings**: Ensure all public APIs are documented
+2. **Check imports**: Verify no circular dependencies introduced
+3. **Test manually**: Run CLI commands to verify functionality
+4. **Update related docs**: Modify architecture docs if structure changes
+
+## Provider-Specific Notes
+
+### Google Providers (Lyria, Veo, Imagen)
+- Use `google-genai` package
+- Lazy-load client with `_get_client()` pattern
+- Handle API version requirements (Lyria needs `v1alpha`)
+
+### AIMLAPI Providers (MiniMax)
+- Use `AIMLAPIClient` for HTTP requests
+- Support long-running jobs (5-15 minutes)
+- Implement polling with `poll_interval` and `max_poll_attempts`
+
+### KlingAI Direct
+- JWT authentication required
+- Long generation times (5-14 minutes)
+- Highest quality output
+
+## Testing Guidelines
+
+- Unit tests never hit real APIs
+- Mock provider clients
+- Test both success and failure paths
+- Use `pytest-asyncio` for async tests
